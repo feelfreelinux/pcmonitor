@@ -5,6 +5,6 @@ python pcmonitor(version. 164 or 204).py [Serial port.]<br>
 <b>Example:</b><br>
 python  pcmonitor164.py /dev/ttyACM0
 <h1>Needed Libraries:</h1>
-<b>PyGObject for python3 (For GUI)</b>
-<b>PySerial for python3</b>
-<b>psutil for python3</b>
+<b>PyGObject for python3 (For GUI)</b><br>
+<b>PySerial for python3</b><br>
+<b>psutil for python3</b><br>
