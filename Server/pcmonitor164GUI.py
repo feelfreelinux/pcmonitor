@@ -33,18 +33,18 @@ run = True
 def proces():
 	ser = serial.Serial(portszeregowy, 9600)
 	while(run==True):
-		ser.write(b'linia0')
+		ser.write(b'!')
 		cpu1 = str(psutil.cpu_percent(interval=1))
 		anam = "Wolny Ram "+str(int(psutil.virtual_memory().available/1000000))+"Mb"
-		ser.write(b'czysc')
+		ser.write(b'%')
 		ser.write(anam.encode())
 		cpu = "CPU: "+cpu1+"%"
 		time.sleep(0.1)
-		ser.write(b'linia1')
+		ser.write(b'@')
 		ser.write(cpu.encode())
 		time.sleep(1)
 	else:
-		ser.write(b'czysc')
+		ser.write(b'%')
 		ser.write(b'Usluga Zamknieta')
 		ser.close()
 
@@ -65,12 +65,14 @@ class OknoStart(Gtk.Window):
 
 		self.vbox = Gtk.VBox(spacing=5)
 
-		self.portcombo = Gtk.ComboBox.new_with_model_and_entry(self.porty)
+		self.portcombo = Gtk.ComboBox.new_with_model(self.porty)
 		self.portcombo.connect("changed", self.ustaw_port)
-		self.portcombo.set_entry_text_column(0)
 		self.przycisk.connect("clicked", self.start)
 		self.przyciskstop.connect("clicked", self.stop)
 		self.vbox.pack_start(self.text1, False, False, 0)
+		self.rtext = Gtk.CellRendererText()
+		self.portcombo.pack_start(self.rtext, True)
+		self.portcombo.add_attribute(self.rtext, "text", 0)
 		self.vbox.pack_start(self.portcombo, False, False, 0)
 		self.vbox.pack_start(self.przycisk, False, False, 0)
 		self.vbox.pack_start(self.przyciskstop, False, False, 0)
@@ -91,7 +93,6 @@ class OknoStart(Gtk.Window):
 		else:
 			run = True
 			self.text2.set_text("Usluga Aktywna")
-			print(portszeregowy)
 			global t
 			t = threading.Thread(target=proces)
 			t.deamon = False
